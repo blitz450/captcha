@@ -103,7 +103,7 @@
 // }());
 var canvas = document.querySelector("#canvas");
 var ctx = canvas.getContext("2d");
-context.beginPath();
+ctx.beginPath();
 canvas.width = 280;
 canvas.height = 280;
 
