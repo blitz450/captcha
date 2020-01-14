@@ -112,7 +112,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.color = "black";
 
 ctx.lineWidth = 10;
-ctx.lineJoin = context.lineCap = 'round';
+ctx.lineJoin = ctx.lineCap = 'round';
 
 debug();
 
