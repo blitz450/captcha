@@ -1,20 +1,20 @@
 // (function () {
-var canvas = document.querySelector("#canvas");
-var context = canvas.getContext("2d");
-context.beginPath();
-canvas.width = 280;
-canvas.height = 280;
+// var canvas = document.querySelector("#canvas");
+// var context = canvas.getContext("2d");
+// context.beginPath();
+// canvas.width = 280;
+// canvas.height = 280;
 
-var Mouse = { x: 0, y: 0 };
-var lastMouse = { x: 0, y: 0 };
-context.fillStyle = "white";
-context.fillRect(0, 0, canvas.width, canvas.height);
-context.color = "black";
+// var Mouse = { x: 0, y: 0 };
+// var lastMouse = { x: 0, y: 0 };
+// context.fillStyle = "white";
+// context.fillRect(0, 0, canvas.width, canvas.height);
+// context.color = "black";
 
-context.lineWidth = 10;
-context.lineJoin = context.lineCap = 'round';
+// context.lineWidth = 10;
+// context.lineJoin = context.lineCap = 'round';
 
-debug();
+// debug();
 
 // 	canvas.addEventListener("mousemove", function (e) {
 // 		lastMouse.x = Mouse.x;
