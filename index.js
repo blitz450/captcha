@@ -2,19 +2,19 @@
 // 	var canvas = document.querySelector("#canvas");
 // 	var context = canvas.getContext("2d");
 // 	context.beginPath();
-// 	canvas.width = 280;
-// 	canvas.height = 280;
+// canvas.width = 280;
+// canvas.height = 280;
 
-// 	var Mouse = { x: 0, y: 0 };
-// 	var lastMouse = { x: 0, y: 0 };
-// 	context.fillStyle = "white";
-// 	context.fillRect(0, 0, canvas.width, canvas.height);
-// 	context.color = "black";
+// var Mouse = { x: 0, y: 0 };
+// var lastMouse = { x: 0, y: 0 };
+// context.fillStyle = "white";
+// context.fillRect(0, 0, canvas.width, canvas.height);
+// context.color = "black";
 
-// 	context.lineWidth = 10;
-// 	context.lineJoin = context.lineCap = 'round';
+// context.lineWidth = 10;
+// context.lineJoin = context.lineCap = 'round';
 
-// 	debug();
+// debug();
 
 // 	canvas.addEventListener("mousemove", function (e) {
 // 		lastMouse.x = Mouse.x;
@@ -101,89 +101,138 @@
 // 		});
 // 	}
 // }());
-var canvas = document.querySelector("#canvas");
-ctx = canvas.getContext('2d');
+(function () {
 
-// setup lines styles .. 
-ctx.strokeStyle = "#DDD";
-ctx.lineWidth = 10;
+	// Get a regular interval for drawing to the screen
+	window.requestAnimFrame = (function (callback) {
+		return window.requestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			window.msRequestAnimaitonFrame ||
+			function (callback) {
+				window.setTimeout(callback, 1000 / 60);
+			};
+	})();
 
-// some variables we'll need .. 
-var drawing = false;
-var mousePos = { x: 0, y: 0 };
-var lastPos = mousePos;
-var isMobile = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
+	// Set up the canvas
+	var canvas = document.querySelector("#canvas");
+	var ctx = canvas.getContext("2d");
+	ctx.beginPath();
+	canvas.width = 280;
+	canvas.height = 280;
+	ctx.fillStyle = "white";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.color = "black";
 
-// mouse/touch events ..
-canvas.addEventListener((isMobile ? 'touchstart' : 'mousedown'), function (e) {
-	drawing = true;
-	lastPos = getMousePos(canvas, e);
-	mousePos = lastPos;
-});
-canvas.addEventListener((isMobile ? 'touchmove' : 'mousemove'), function (e) {
-	mousePos = getMousePos(canvas, e);
-});
-canvas.addEventListener((isMobile ? 'touchend' : 'mouseup'), function (e) {
-	drawing = false;
-});
+	ctx.lineWidth = 10;
+	ctx.lineJoin = ctx.lineCap = 'round';
 
-// helper functions .. 
-function getMousePos(canvasDom, touchOrMouseEvent) {
-	var rect = canvasDom.getBoundingClientRect();
-	return {
-		x: (isMobile ? touchOrMouseEvent.touches[0].clientX : touchOrMouseEvent.clientX) - rect.left,
-		y: (isMobile ? touchOrMouseEvent.touches[0].clientY : touchOrMouseEvent.clientY) - rect.top
-	};
-};
+	// Set up the UI
+	var clearBtn = $("#clearButton");
+	clearBtn.on("click", function () {
+		clearCanvas();
+	});
 
-// drawing .. 
-window.requestAnimFrame = (function (callback) {
-	return window.requestAnimationFrame ||
-		window.webkitRequestAnimationFrame ||
-		window.mozRequestAnimationFrame ||
-		window.oRequestAnimationFrame ||
-		window.msRequestAnimationFrame ||
-		function (callback) {
-			window.setTimeout(callback, 1000 / 60);
+	// Set up mouse events for drawing
+	var drawing = false;
+	var mousePos = { x: 0, y: 0 };
+	var lastPos = mousePos;
+	canvas.addEventListener("mousedown", function (e) {
+		drawing = true;
+		lastPos = getMousePos(canvas, e);
+	}, false);
+	canvas.addEventListener("mouseup", function (e) {
+		drawing = false;
+	}, false);
+	canvas.addEventListener("mousemove", function (e) {
+		mousePos = getMousePos(canvas, e);
+	}, false);
+
+	// Set up touch events for mobile, etc
+	canvas.addEventListener("touchstart", function (e) {
+		mousePos = getTouchPos(canvas, e);
+		var touch = e.touches[0];
+		var mouseEvent = new MouseEvent("mousedown", {
+			clientX: touch.clientX,
+			clientY: touch.clientY
+		});
+		canvas.dispatchEvent(mouseEvent);
+	}, false);
+	canvas.addEventListener("touchend", function (e) {
+		var mouseEvent = new MouseEvent("mouseup", {});
+		canvas.dispatchEvent(mouseEvent);
+	}, false);
+	canvas.addEventListener("touchmove", function (e) {
+		var touch = e.touches[0];
+		var mouseEvent = new MouseEvent("mousemove", {
+			clientX: touch.clientX,
+			clientY: touch.clientY
+		});
+		canvas.dispatchEvent(mouseEvent);
+	}, false);
+
+	// Prevent scrolling when touching the canvas
+	document.body.addEventListener("touchstart", function (e) {
+		if (e.target == canvas) {
+			e.preventDefault();
+		}
+	}, false);
+	document.body.addEventListener("touchend", function (e) {
+		if (e.target == canvas) {
+			e.preventDefault();
+		}
+	}, false);
+	document.body.addEventListener("touchmove", function (e) {
+		if (e.target == canvas) {
+			e.preventDefault();
+		}
+	}, false);
+
+	// Get the position of the mouse relative to the canvas
+	function getMousePos(canvasDom, mouseEvent) {
+		var rect = canvasDom.getBoundingClientRect();
+		return {
+			x: mouseEvent.clientX - rect.left,
+			y: mouseEvent.clientY - rect.top
 		};
-})();
-
-function debug() {
-	/* CLEAR BUTTON */
-	var clearButton = $("#clearButton");
-
-	clearButton.on("click", function () {
-
-		context.clearRect(0, 0, 280, 280);
-		context.fillStyle = "white";
-		context.fillRect(0, 0, canvas.width, canvas.height);
-
-	});
-
-	/* COLOR SELECTOR */
-
-	$("#colors").change(function () {
-		var color = $("#colors").val();
-		context.color = color;
-	});
-
-	/* LINE WIDTH */
-
-	$("#lineWidth").change(function () {
-		context.lineWidth = $(this).val();
-	});
-}
-
-function renderCanvas() {
-	if (drawing) {
-		ctx.moveTo(lastPos.x, lastPos.y);
-		ctx.lineTo(mousePos.x, mousePos.y);
-		ctx.stroke();
-		lastPos = mousePos;
 	}
-};
 
-(function drawLoop() {
-	requestAnimFrame(drawLoop);
-	renderCanvas();
+	// Get the position of a touch relative to the canvas
+	function getTouchPos(canvasDom, touchEvent) {
+		var rect = canvasDom.getBoundingClientRect();
+		return {
+			x: touchEvent.touches[0].clientX - rect.left,
+			y: touchEvent.touches[0].clientY - rect.top
+		};
+	}
+
+	// Draw to the canvas
+	function renderCanvas() {
+		if (drawing) {
+			ctx.moveTo(lastPos.x, lastPos.y);
+			ctx.lineTo(mousePos.x, mousePos.y);
+			ctx.stroke();
+			lastPos = mousePos;
+		}
+	}
+
+	function clearCanvas() {
+		// canvas.width = canvas.width;
+		ctx.beginPath();
+		ctx.clearRect(0, 0, 280, 280);
+		ctx.fillStyle = "white";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.color = "black";
+
+		ctx.lineWidth = 10;
+		ctx.lineJoin = ctx.lineCap = 'round';
+	}
+
+	// Allow for animation
+	(function drawLoop() {
+		requestAnimFrame(drawLoop);
+		renderCanvas();
+	})();
+
 })();
