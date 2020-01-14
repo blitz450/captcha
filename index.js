@@ -1,20 +1,20 @@
 // (function () {
-// var canvas = document.querySelector("#canvas");
-// var context = canvas.getContext("2d");
-// context.beginPath();
-// canvas.width = 280;
-// canvas.height = 280;
+// 	var canvas = document.querySelector("#canvas");
+// 	var context = canvas.getContext("2d");
+// 	context.beginPath();
+// 	canvas.width = 280;
+// 	canvas.height = 280;
 
-// var Mouse = { x: 0, y: 0 };
-// var lastMouse = { x: 0, y: 0 };
-// context.fillStyle = "white";
-// context.fillRect(0, 0, canvas.width, canvas.height);
-// context.color = "black";
+// 	var Mouse = { x: 0, y: 0 };
+// 	var lastMouse = { x: 0, y: 0 };
+// 	context.fillStyle = "white";
+// 	context.fillRect(0, 0, canvas.width, canvas.height);
+// 	context.color = "black";
 
-// context.lineWidth = 10;
-// context.lineJoin = context.lineCap = 'round';
+// 	context.lineWidth = 10;
+// 	context.lineJoin = context.lineCap = 'round';
 
-// debug();
+// 	debug();
 
 // 	canvas.addEventListener("mousemove", function (e) {
 // 		lastMouse.x = Mouse.x;
@@ -75,49 +75,38 @@
 // 		context.stroke();
 // 	};
 
-// function debug() {
-// 	/* CLEAR BUTTON */
-// 	var clearButton = $("#clearButton");
+// 	function debug() {
+// 		/* CLEAR BUTTON */
+// 		var clearButton = $("#clearButton");
 
-// 	clearButton.on("click", function () {
+// 		clearButton.on("click", function () {
 
-// 		context.clearRect(0, 0, 280, 280);
-// 		context.fillStyle = "white";
-// 		context.fillRect(0, 0, canvas.width, canvas.height);
+// 			context.clearRect(0, 0, 280, 280);
+// 			context.fillStyle = "white";
+// 			context.fillRect(0, 0, canvas.width, canvas.height);
 
-// 	});
+// 		});
 
-// 	/* COLOR SELECTOR */
+// 		/* COLOR SELECTOR */
 
-// 	$("#colors").change(function () {
-// 		var color = $("#colors").val();
-// 		context.color = color;
-// 	});
+// 		$("#colors").change(function () {
+// 			var color = $("#colors").val();
+// 			context.color = color;
+// 		});
 
-// 	/* LINE WIDTH */
+// 		/* LINE WIDTH */
 
-// 	$("#lineWidth").change(function () {
-// 		context.lineWidth = $(this).val();
-// 	});
-// }
+// 		$("#lineWidth").change(function () {
+// 			context.lineWidth = $(this).val();
+// 		});
+// 	}
 // }());
 var canvas = document.querySelector("#canvas");
-var ctx = canvas.getContext("2d");
-ctx.beginPath();
-canvas.width = 280;
-canvas.height = 280;
-
-ctx.fillStyle = "white";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.color = "black";
-
-ctx.lineWidth = 10;
-ctx.lineJoin = ctx.lineCap = 'round';
-
-debug();
+ctx = canvas.getContext('2d');
 
 // setup lines styles .. 
-
+ctx.strokeStyle = "#DDD";
+ctx.lineWidth = 10;
 
 // some variables we'll need .. 
 var drawing = false;
