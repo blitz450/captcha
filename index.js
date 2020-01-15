@@ -21,7 +21,7 @@
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.color = "black";
 
-	ctx.lineWidth = 7;
+	ctx.lineWidth = 9;
 	ctx.lineJoin = ctx.lineCap = 'round';
 
 	// Set up the UI
