@@ -11,18 +11,17 @@
 				window.setTimeout(callback, 1000 / 60);
 			};
 	})();
-
 	// Set up the canvas
 	var canvas = document.querySelector("#canvas");
 	var ctx = canvas.getContext("2d");
+	ctx.beginPath();
 	canvas.width = 280;
 	canvas.height = 280;
-	ctx.beginPath();
 	ctx.fillStyle = "white";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.color = "black";
-	ctx.strokeStyle = ctx.color;
-	ctx.lineWidth = 10;
+
+	ctx.lineWidth = 7;
 	ctx.lineJoin = ctx.lineCap = 'round';
 
 	// Set up the UI
@@ -128,10 +127,6 @@
 		ctx.clearRect(0, 0, 280, 280);
 		ctx.fillStyle = "white";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.color = "black";
-		ctx.strokeStyle = ctx.color;
-		ctx.lineWidth = 10;
-		ctx.lineJoin = ctx.lineCap = 'round';
 	}
 
 	// Allow for animation
